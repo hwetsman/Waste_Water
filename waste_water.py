@@ -55,14 +55,14 @@ for dat in to_calculate:
     start_amt = base/(1+(change_factor/100))   
     df.loc[calc_idx,'start_quantity'] = start_amt
 
-# fig = plt.Figure(figsize=(8,4))
-# plt.title('New Orleans Covid Waste Water Testing Data')
-# plt.xlabel('Date')
-# plt.ylabel('Viral Load (not to actual scale)')
-# plt.xticks(rotation=70)
-# X = df.date_start.tolist()
-# Y = df.start_quantity.tolist()
-# plt.plot(X,Y)
+fig = plt.Figure(figsize=(8,4))
+plt.title('New Orleans Covid Waste Water Testing Data')
+plt.xlabel('Date')
+plt.ylabel('Viral Load (not to actual scale)')
+plt.xticks(rotation=70)
+X = df.date_start.tolist()
+Y = df.start_quantity.tolist()
+plt.plot(X,Y)
 
 
 
