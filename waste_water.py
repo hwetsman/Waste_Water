@@ -27,6 +27,7 @@ df.reset_index(inplace=True,drop=True)
 #see if there's enough data
 end_dates = df.date_end.tolist()
 start_dates=df.date_start.tolist()
+first_day = str(np.array(start_dates).min()).split(' ')[0]
 enough = False
 for dat in end_dates:
     if dat in start_dates:
@@ -56,7 +57,7 @@ for dat in to_calculate:
     df.loc[calc_idx,'start_quantity'] = start_amt
 
 fig = plt.Figure(figsize=(8,4))
-plt.title('New Orleans Covid Waste Water Testing Data')
+plt.title(f'New Orleans Covid Waste Water Testing Data from {first_day}')
 plt.xlabel('Date')
 plt.ylabel('Viral Load (not to actual scale)')
 plt.xticks(rotation=70)
