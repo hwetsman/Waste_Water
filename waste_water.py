@@ -56,7 +56,7 @@ for dat in to_calculate:
     start_amt = base/(1+(change_factor/100))   
     df.loc[calc_idx,'start_quantity'] = start_amt
 
-fig = plt.Figure(figsize=(8,4))
+fig = plt.figure(figsize=(12,5))
 plt.title(f'New Orleans Covid Waste Water Testing Data from {first_day}')
 plt.xlabel('Date')
 plt.ylabel('Viral Load (not to actual scale)')
