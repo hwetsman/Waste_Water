@@ -59,7 +59,10 @@ for plant in plant_dict:
         else:
             base = df.loc[i-1, 'start_quantity']
             percent_change = df.loc[i, 'ptc_15d']
-            delta = df.loc[i, 'ptc_15d']/100*base
+            if percent_change == -100:
+                percent_change = -99
+            delta = percent_change/100*base
+            # delta = df.loc[i, 'ptc_15d']/100*base
             new_total = base+delta
             df.loc[i, 'start_quantity'] = int(new_total)
 
@@ -69,6 +72,8 @@ for plant in plant_dict:
         calc_idx = df[df.date_end == dat].index[0]
         base_idx = df[df.date_start == dat].index[0]
         change_factor = df.loc[calc_idx, 'ptc_15d']
+        if change_factor == -100:
+            change_factor = -99
         base = df.loc[base_idx, 'start_quantity']
         start_amt = base/(1+(change_factor/100))
         df.loc[calc_idx, 'start_quantity'] = start_amt
