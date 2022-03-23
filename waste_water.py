@@ -16,7 +16,7 @@ import numpy as np
 url = 'https://data.cdc.gov/resource/2ew6-ywp6.json?county_names=Orleans'
 data = requests.get(url)
 df = pd.read_json(data.content)
-print(df.columns)
+
 
 
 df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
@@ -30,11 +30,9 @@ plants = list(set(df.wwtp_id.tolist()))
 start_dates = df.date_start.tolist()
 first_day = str(np.array(start_dates).min()).split(' ')[0]
 
-print(plants)
 plant_dict = {}
 for plant in plants:
     plant_dict[plant] = df[df.wwtp_id == plant]
-print(plant_dict)
 
 
 
@@ -74,7 +72,6 @@ for plant in plant_dict:
         start_amt = base/(1+(change_factor/100))
         df.loc[calc_idx, 'start_quantity'] = start_amt
 
-    print(df)
     
     # create figure
     fig = plt.figure(figsize=(12, 5))
