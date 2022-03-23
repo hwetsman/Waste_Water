@@ -16,6 +16,7 @@ import numpy as np
 url = 'https://data.cdc.gov/resource/2ew6-ywp6.json?county_names=Orleans'
 data = requests.get(url)
 df = pd.read_json(data.content)
+print(df.columns)
 
 
 df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
@@ -29,10 +30,13 @@ plants = list(set(df.wwtp_id.tolist()))
 start_dates = df.date_start.tolist()
 first_day = str(np.array(start_dates).min()).split(' ')[0]
 
-# print(plants)
+print(plants)
 plant_dict = {}
 for plant in plants:
     plant_dict[plant] = df[df.wwtp_id == plant]
+print(plant_dict)
+
+
 
 for plant in plant_dict:
     df = plant_dict.get(plant)
@@ -54,10 +58,7 @@ for plant in plant_dict:
         else:
             base = df.loc[i-1, 'start_quantity']
             percent_change = df.loc[i, 'ptc_15d']
-            if percent_change == -100:
-                percent_change = -99
-            delta = percent_change/100*base
-            # delta = df.loc[i, 'ptc_15d']/100*base
+            delta = df.loc[i, 'ptc_15d']/100*base
             new_total = base+delta
             df.loc[i, 'start_quantity'] = int(new_total)
 
@@ -72,6 +73,8 @@ for plant in plant_dict:
         base = df.loc[base_idx, 'start_quantity']
         start_amt = base/(1+(change_factor/100))
         df.loc[calc_idx, 'start_quantity'] = start_amt
+
+    print(df)
     
     # create figure
     fig = plt.figure(figsize=(12, 5))
@@ -83,6 +86,3 @@ for plant in plant_dict:
     plt.ylabel('Viral Load (not to actual scale)')
     plt.legend()
     plt.xticks(rotation=70)
-
-
-
