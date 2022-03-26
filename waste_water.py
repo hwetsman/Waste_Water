@@ -43,6 +43,7 @@ for plant in plant_dict:
     end_dates = df.date_end.tolist()
     start_dates = df.date_start.tolist()
     first_day = str(np.array(start_dates).min()).split(' ')[0]
+    last_day = str(np.array(end_dates).min()).split(' ')[0]
     enough = False
     for dat in end_dates:
         if dat in start_dates:
@@ -78,7 +79,7 @@ for plant in plant_dict:
     X = df.date_start.tolist()
     Y = df.start_quantity.tolist()
     plt.plot(X, Y,label=plant)
-    plt.title(f'New Orleans Covid Waste Water Testing Data from {first_day}')
+    plt.title(f'New Orleans Covid Waste Water Testing Data from {first_day} to {last_day}')
     plt.xlabel('Date')
     plt.ylabel('Viral Load (not to actual scale)')
     plt.legend()
