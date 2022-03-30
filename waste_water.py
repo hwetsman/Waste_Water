@@ -13,19 +13,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+#url = 'https://data.cdc.gov/resource/2ew6-ywp6.json'
 states = ['Florida','Louisiana']
 state_dict={'Florida':['Orange'],'Louisiana':['Orleans']}
 for state in states:
     url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
-
-#url = 'https://data.cdc.gov/resource/2ew6-ywp6.json?county_names=Orleans'
     data = requests.get(url)
     df = pd.read_json(data.content)
     df = df[df.county_names.isin(state_dict.get(state))]
-
-    print(df)
-
-
 
     df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
     df = df[~df.ptc_15d.isna()]
