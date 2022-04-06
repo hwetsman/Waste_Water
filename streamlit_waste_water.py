@@ -17,6 +17,13 @@ import streamlit as st
 #url = 'https://data.cdc.gov/resource/2ew6-ywp6.json'
 # url = 'https://github.com/biobotanalytics/covid19-wastewater-data/blob/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
 
+#select state
+states = ['Louisiana','Florida']
+state = st.sidebar.multiselect('State of Interest',states,default=None)
+
+
+
+
 #alternate data source for Orange County
 url = 'https://raw.githubusercontent.com/biobotanalytics/covid19-wastewater-data/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
 df = pd.read_csv(url)
