@@ -14,42 +14,55 @@ import numpy as np
 import streamlit as st
 
 
-url = 'https://data.cdc.gov/resource/2ew6-ywp6.json'
+# url = 'https://data.cdc.gov/resource/2ew6-ywp6.json'
 # url = 'https://github.com/biobotanalytics/covid19-wastewater-data/blob/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
-# url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
-data = requests.get(url)
-df = pd.read_json(data.content)
+
+
 #select state
 states = ['Louisiana','Florida','Colorado','Idaho']
 state = st.sidebar.selectbox('State of Interest',states)
-
+st.write(state)
+url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
+data = requests.get(url)
+df = pd.read_json(data.content)
 df = df[df.reporting_jurisdiction == state]
+counties = df.county_names.tolist()
+county = st.sidebar.selectbox('County of Interest',counties)
+st.write(county)
+df = df[df.county_names == county]
+plants = list(set(df.wwtp_id.tolist()))
+st.write(plants)
+plant = st.sidebar.selectbox('Treatment Plant',plants)
+df = df[df.wwtp_id == plant]
 st.write(df)
 
 
 
 #alternate data source for Orange County
-url = 'https://raw.githubusercontent.com/biobotanalytics/covid19-wastewater-data/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
-df = pd.read_csv(url)
-df.drop('Unnamed: 0',axis=1,inplace=True)
-
-states = ['FL']
-df = df[df.state.isin(states)]
-df = df[df.name == 'Orange County, FL']
-df.sampling_week = pd.to_datetime(df.sampling_week, format='%Y-%m-%d')
-df = df[['sampling_week','effective_concentration_rolling_average']]
-fig = plt.figure(figsize=(12, 5))
-first_day = str(df.sampling_week.min()).split(' ')[0]
-last_day = str(df.sampling_week.max()).split(' ')[0]
-
-X = df.sampling_week.tolist()
-Y = df.effective_concentration_rolling_average.tolist()
-plt.plot(X, Y)
-plt.title(f'Orange County Covid Waste Water Testing Data from {first_day} to {last_day}')
-plt.xlabel('Date')
-plt.ylabel('Effective Concentration Rolling Average')
-plt.legend()
-plt.xticks(rotation=70)
+if state == 'Florida' and county == 'Orange':
+    url = 'https://raw.githubusercontent.com/biobotanalytics/covid19-wastewater-data/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
+    df = pd.read_csv(url)
+    df.drop('Unnamed: 0',axis=1,inplace=True)
+    
+    states = ['FL']
+    df = df[df.state.isin(states)]
+    df = df[df.name == 'Orange County, FL']
+    df.sampling_week = pd.to_datetime(df.sampling_week, format='%Y-%m-%d')
+    df = df[['sampling_week','effective_concentration_rolling_average']]
+    fig = plt.figure(figsize=(12, 5))
+    first_day = str(df.sampling_week.min()).split(' ')[0]
+    last_day = str(df.sampling_week.max()).split(' ')[0]
+    
+    fig = plt.figure(figsize=(10,8))
+    X = df.sampling_week.tolist()
+    Y = df.effective_concentration_rolling_average.tolist()
+    plt.plot(X, Y)
+    plt.title(f'Orange County Covid Waste Water Testing Data from {first_day} to {last_day}')
+    plt.xlabel('Date')
+    plt.ylabel('Effective Concentration Rolling Average')
+    plt.legend()
+    plt.xticks(rotation=70)
+    st.plt(fig)
 
 states = ['Louisiana']
 state_dict={'Louisiana':['Orleans']}
