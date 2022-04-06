@@ -14,13 +14,17 @@ import numpy as np
 import streamlit as st
 
 
-#url = 'https://data.cdc.gov/resource/2ew6-ywp6.json'
+url = 'https://data.cdc.gov/resource/2ew6-ywp6.json'
 # url = 'https://github.com/biobotanalytics/covid19-wastewater-data/blob/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
-
+# url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
+data = requests.get(url)
+df = pd.read_json(data.content)
 #select state
-states = ['Louisiana','Florida']
-state = st.sidebar.multiselect('State of Interest',states,default=None)
+states = ['Louisiana','Florida','Colorado','Idaho']
+state = st.sidebar.selectbox('State of Interest',states)
 
+df = df[df.reporting_jurisdiction == state]
+st.write(df)
 
 
 
