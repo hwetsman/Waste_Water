@@ -26,7 +26,7 @@ url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
 data = requests.get(url)
 df = pd.read_json(data.content)
 df = df[df.reporting_jurisdiction == state]
-counties = df.county_names.tolist()
+counties = list(set(df.county_names.tolist()))
 county = st.sidebar.selectbox('County of Interest',counties)
 
 st.write(county)
