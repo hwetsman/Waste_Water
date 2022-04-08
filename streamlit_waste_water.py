@@ -65,22 +65,23 @@ if state == 'Florida' and county == 'Orange':
     plt.ylabel('Effective Concentration Rolling Average')
     plt.legend()
     plt.xticks(rotation=70)
-    st.plt(fig)
+    st.pyplot(fig)
 
-# states = ['Louisiana']
-# state_dict={'Louisiana':['Orleans']}
-# for state in states:
-#     url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
-#     data = requests.get(url)
-#     df = pd.read_json(data.content)
-    
-#     df = df[df.county_names.isin(state_dict.get(state))]
 
-#     df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
-#     df = df[~df.ptc_15d.isna()]
-#     df.date_start = pd.to_datetime(df.date_start, format='%Y-%m-%d')
-#     df.date_end = pd.to_datetime(df.date_end, format='%Y-%m-%d')
-#     df.sort_values('date_end', inplace=True, axis=0)
+
+df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
+df = df[~df.ptc_15d.isna()]
+df.reset_index(drop=True,inplace=True)
+st.write(type(df.loc[0,'date_start']))
+for i in range(df.shape[0]):
+    df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'],format='%Y-%m-%d')
+    df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'],format='%Y-%m-%d')
+# df.date_start = pd.to_datetime(df.date_start, format='%Y-%m-%d')
+
+# df.date_end = pd.to_datetime(df.date_end, format='%Y-%m-%d')
+df.sort_values('date_end', inplace=True, axis=0)
+df.drop_duplicates(inplace=True)
+st.write(df)
 #     df.reset_index(inplace=True, drop=True)
 #     plants = list(set(df.wwtp_id.tolist()))
     
