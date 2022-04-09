@@ -33,7 +33,7 @@ st.write(county)
 df = df[df.county_names == county]
 plants = list(set(df.wwtp_id.tolist()))
 
-st.write(plants)
+# st.write(plants)
 plant = st.sidebar.selectbox('Treatment Plant',plants)
 df = df[df.wwtp_id == plant]
 
@@ -72,22 +72,27 @@ if state == 'Florida' and county == 'Orange':
 df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
 df = df[~df.ptc_15d.isna()]
 df.reset_index(drop=True,inplace=True)
-st.write(type(df.loc[0,'date_start']))
-for i in range(df.shape[0]):
-    df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'],format='%Y-%m-%d')
-    df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'],format='%Y-%m-%d')
-# df.date_start = pd.to_datetime(df.date_start, format='%Y-%m-%d')
-
-# df.date_end = pd.to_datetime(df.date_end, format='%Y-%m-%d')
+# st.write(type(df.loc[0,'date_start']))
 df.sort_values('date_end', inplace=True, axis=0)
 df.drop_duplicates(inplace=True)
+for i,r in df.iterrows():
+    df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'], format='%Y-%m-%d')
+    df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'], format='%Y-%m-%d')
 st.write(df)
-#     df.reset_index(inplace=True, drop=True)
-#     plants = list(set(df.wwtp_id.tolist()))
-    
-#     start_dates = df.date_start.tolist()
-#     first_day = str(np.array(start_dates).min()).split(' ')[0]
-    
+
+#get first and last day
+starting_dates = df.date_start.tolist()
+ending_dates = df.date_end.tolist()
+first_day = str(np.array(starting_dates).min()).split(' ')[0]
+last_day = str(np.array(ending_dates).max()).split(' ')[0]
+st.write(first_day)
+st.write(last_day)
+
+# first_day = str(np.array(starting_dates).min()).split(' ')[0]
+# ending_dates = df.date_end.tolist()
+# last_day = str(np.array(ending_dates).min()).split(' ')[0]
+# st.write(first_day)
+# st.write(last_day)
 #     plant_dict = {}
 #     for plant in plants:
 #         plant_dict[plant] = df[df.wwtp_id == plant]
@@ -99,10 +104,10 @@ st.write(df)
 #         county = df.county_names.tolist()[0]
 #         df.reset_index(drop=True, inplace=True)
 #         # see if there's enough data
-#         end_dates = df.date_end.tolist()
+#         
 #         start_dates = df.date_start.tolist()
 #         first_day = str(np.array(start_dates).min()).split(' ')[0]
-#         last_day = str(np.array(end_dates).min()).split(' ')[0]
+#         
 #         enough = False
 #         for dat in end_dates:
 #             if dat in start_dates:
