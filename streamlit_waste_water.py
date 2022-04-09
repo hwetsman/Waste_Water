@@ -88,17 +88,7 @@ last_day = str(np.array(ending_dates).max()).split(' ')[0]
 st.write(first_day)
 st.write(last_day)
 
-# first_day = str(np.array(starting_dates).min()).split(' ')[0]
-# ending_dates = df.date_end.tolist()
-# last_day = str(np.array(ending_dates).min()).split(' ')[0]
-# st.write(first_day)
-# st.write(last_day)
-#     plant_dict = {}
-#     for plant in plants:
-#         plant_dict[plant] = df[df.wwtp_id == plant]
-    
-    
-    
+
 #     for plant in plant_dict:
 #         df = plant_dict.get(plant)
 #         county = df.county_names.tolist()[0]
