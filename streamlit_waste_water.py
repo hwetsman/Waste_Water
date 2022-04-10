@@ -88,6 +88,30 @@ last_day = str(np.array(ending_dates).max()).split(' ')[0]
 st.write(first_day)
 st.write(last_day)
 
+# calculate quantity for first end date forward as start
+idx_first = df[df.date_start == df.date_end.min()].index[0]
+for i in range(idx_first, df.index.max()+1, 1):
+    if i == idx_first:
+        df.loc[i, 'start_quantity'] = 10000
+    else:
+        base = df.loc[i-1, 'start_quantity']
+        percent_change = df.loc[i, 'ptc_15d']
+        delta = df.loc[i, 'ptc_15d']/100*base
+        new_total = base+delta
+        df.loc[i, 'start_quantity'] = int(new_total)
+
+
+#add figure
+fig = plt.figure(figsize=(12, 5))
+X = df.date_start.tolist()
+Y = df.start_quantity.tolist()
+plt.plot(X, Y,label=plant)
+plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
+plt.xlabel('Date')
+plt.ylabel('Viral Load (not to actual scale)')
+plt.legend()
+plt.xticks(rotation=70)
+
 
 #     for plant in plant_dict:
 #         df = plant_dict.get(plant)
