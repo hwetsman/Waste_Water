@@ -66,55 +66,56 @@ if state == 'Florida' and county == 'Orange':
     plt.legend()
     plt.xticks(rotation=70)
     st.pyplot(fig)
+    
+else:
 
 
-
-df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
-df = df[~df.ptc_15d.isna()]
-df.reset_index(drop=True,inplace=True)
-# st.write(type(df.loc[0,'date_start']))
-df.sort_values('date_end', inplace=True, axis=0)
-df.drop_duplicates(inplace=True)
-for i,r in df.iterrows():
-    df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'], format='%Y-%m-%d')
-    df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'], format='%Y-%m-%d')
-st.write(df)
-
-#get first and last day
-starting_dates = df.date_start.tolist()
-ending_dates = df.date_end.tolist()
-first_day = str(np.array(starting_dates).min()).split(' ')[0]
-last_day = str(np.array(ending_dates).max()).split(' ')[0]
-st.write(first_day)
-st.write(last_day)
-
-# calculate quantity for first end date forward as start
-df.reset_index(inplace=True,drop=True)
-idx_first = df[df.date_start == df.date_end.min()].index[0]
-st.write(idx_first)
-st.write(df.index.max())
-for i in range(idx_first, df.index.max()+1, 1):
-    if i == idx_first:
-        df.loc[i, 'start_quantity'] = 10000
-    else:
-        base = df.loc[i-1, 'start_quantity']
-        percent_change = df.loc[i, 'ptc_15d']
-        delta = df.loc[i, 'ptc_15d']/100*base
-        new_total = base+delta
-        df.loc[i, 'start_quantity'] = int(new_total)
-
-
-#add figure
-fig = plt.figure(figsize=(12, 5))
-X = df.date_start.tolist()
-Y = df.start_quantity.tolist()
-plt.plot(X, Y,label=plant)
-plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
-plt.xlabel('Date')
-plt.ylabel('Viral Load (not to actual scale)')
-plt.legend()
-plt.xticks(rotation=70)
-st.pyplot(fig)
+    df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
+    df = df[~df.ptc_15d.isna()]
+    df.reset_index(drop=True,inplace=True)
+    # st.write(type(df.loc[0,'date_start']))
+    df.sort_values('date_end', inplace=True, axis=0)
+    df.drop_duplicates(inplace=True)
+    for i,r in df.iterrows():
+        df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'], format='%Y-%m-%d')
+        df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'], format='%Y-%m-%d')
+    st.write(df)
+    
+    #get first and last day
+    starting_dates = df.date_start.tolist()
+    ending_dates = df.date_end.tolist()
+    first_day = str(np.array(starting_dates).min()).split(' ')[0]
+    last_day = str(np.array(ending_dates).max()).split(' ')[0]
+    st.write(first_day)
+    st.write(last_day)
+    
+    # calculate quantity for first end date forward as start
+    df.reset_index(inplace=True,drop=True)
+    idx_first = df[df.date_start == df.date_end.min()].index[0]
+    st.write(idx_first)
+    st.write(df.index.max())
+    for i in range(idx_first, df.index.max()+1, 1):
+        if i == idx_first:
+            df.loc[i, 'start_quantity'] = 10000
+        else:
+            base = df.loc[i-1, 'start_quantity']
+            percent_change = df.loc[i, 'ptc_15d']
+            delta = df.loc[i, 'ptc_15d']/100*base
+            new_total = base+delta
+            df.loc[i, 'start_quantity'] = int(new_total)
+    
+    
+    #add figure
+    fig = plt.figure(figsize=(12, 5))
+    X = df.date_start.tolist()
+    Y = df.start_quantity.tolist()
+    plt.plot(X, Y,label=plant)
+    plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
+    plt.xlabel('Date')
+    plt.ylabel('Viral Load (not to actual scale)')
+    plt.legend()
+    plt.xticks(rotation=70)
+    st.pyplot(fig)
 
 
 #     for plant in plant_dict:
