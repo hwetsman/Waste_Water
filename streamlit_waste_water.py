@@ -90,6 +90,7 @@ st.write(last_day)
 
 # calculate quantity for first end date forward as start
 idx_first = df[df.date_start == df.date_end.min()].index[0]
+st.write(idx_first)
 for i in range(idx_first, df.index.max()+1, 1):
     if i == idx_first:
         df.loc[i, 'start_quantity'] = 10000
