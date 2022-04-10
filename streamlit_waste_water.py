@@ -89,8 +89,10 @@ st.write(first_day)
 st.write(last_day)
 
 # calculate quantity for first end date forward as start
+df.reset_index(inplace=True,drop=True)
 idx_first = df[df.date_start == df.date_end.min()].index[0]
 st.write(idx_first)
+st.write(df.index.max())
 for i in range(idx_first, df.index.max()+1, 1):
     if i == idx_first:
         df.loc[i, 'start_quantity'] = 10000
@@ -112,6 +114,7 @@ plt.xlabel('Date')
 plt.ylabel('Viral Load (not to actual scale)')
 plt.legend()
 plt.xticks(rotation=70)
+st.pyplot(fig)
 
 
 #     for plant in plant_dict:
