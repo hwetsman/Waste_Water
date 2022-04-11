@@ -20,12 +20,14 @@ import streamlit as st
 
 #select state
 # states = ['Louisiana','Florida','Colorado','Idaho']
-states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Washington DC', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
+states = ['Idaho', 'Texas', 'Washington', 'Maine', 'Missouri', 'Houston', 'Illinois', 'New York', 'South Dakota', 'Nebraska', 'Oregon', 'Wisconsin', 'Nevada', 'South Carolina', 'Colorado', 'Chicago', 'Minnesota', 'West Virginia', 'Kansas', 'Michigan', 'Georgia', 'Maryland', 'New York City', 'California', 'Vermont', 'Massachusetts', 'Louisiana', 'Rhode Island', 'Ohio', 'Indiana', 'North Carolina', 'Utah', 'Florida', 'Iowa', 'Connecticut', 'Virginia']
 state = st.sidebar.selectbox('State of Interest',states)
 st.write(state)
+
 url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
 data = requests.get(url)
 df = pd.read_json(data.content)
+
 df = df[df.reporting_jurisdiction == state]
 counties = list(set(df.county_names.tolist()))
 county = st.sidebar.selectbox('County of Interest',counties)
