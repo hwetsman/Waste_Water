@@ -100,7 +100,7 @@ else:
     st.write(df.index.max())
     for i in range(idx_first, df.index.max()+1, 1):
         if i == idx_first:
-            df.loc[i, 'start_quantity'] = 1000
+            df.loc[i, 'start_quantity'] = 1
         else:
             base = df.loc[i-1, 'start_quantity']
             percent_change = df.loc[i, 'ptc_15d']
