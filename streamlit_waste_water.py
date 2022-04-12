@@ -67,6 +67,7 @@ if state == 'Florida' and county == 'Orange':
     plt.xlabel('Date')
     plt.ylabel('Effective Concentration Rolling Average')
     plt.legend()
+    plt.yscale('log')
     plt.xticks(rotation=70)
     st.pyplot(fig)
     
@@ -99,13 +100,13 @@ else:
     st.write(df.index.max())
     for i in range(idx_first, df.index.max()+1, 1):
         if i == idx_first:
-            df.loc[i, 'start_quantity'] = 10000
+            df.loc[i, 'start_quantity'] = 1000
         else:
             base = df.loc[i-1, 'start_quantity']
             percent_change = df.loc[i, 'ptc_15d']
             delta = df.loc[i, 'ptc_15d']/100*base
             new_total = base+delta
-            df.loc[i, 'start_quantity'] = int(new_total)
+            df.loc[i, 'start_quantity'] = max(int(new_total),1)
     
     
     #add figure
@@ -113,6 +114,7 @@ else:
     X = df.date_start.tolist()
     Y = df.start_quantity.tolist()
     plt.plot(X, Y,label=plant)
+    plt.yscale('log')
     plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
     plt.xlabel('Date')
     plt.ylabel('Viral Load (not to actual scale)')
