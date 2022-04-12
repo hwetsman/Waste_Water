@@ -20,7 +20,7 @@ import streamlit as st
 
 #select state
 # states = ['Louisiana','Florida','Colorado','Idaho']
-states = ['Idaho', 'Texas', 'Washington', 'Maine', 'Missouri', 'Houston', 'Illinois', 'New York', 'South Dakota', 'Nebraska', 'Oregon', 'Wisconsin', 'Nevada', 'South Carolina', 'Colorado', 'Chicago', 'Minnesota', 'West Virginia', 'Kansas', 'Michigan', 'Georgia', 'Maryland', 'New York City', 'California', 'Vermont', 'Massachusetts', 'Louisiana', 'Rhode Island', 'Ohio', 'Indiana', 'North Carolina', 'Utah', 'Florida', 'Iowa', 'Connecticut', 'Virginia']
+states = ['Idaho', 'Texas', 'Washington', 'Maine', 'Missouri', 'Illinois', 'New York', 'South Dakota', 'Nebraska', 'Oregon', 'Wisconsin', 'Nevada', 'South Carolina', 'Colorado', 'Minnesota', 'West Virginia', 'Kansas', 'Michigan', 'Georgia', 'Maryland', 'California', 'Vermont', 'Massachusetts', 'Louisiana', 'Rhode Island', 'Ohio', 'Indiana', 'North Carolina', 'Utah', 'Florida', 'Iowa', 'Connecticut', 'Virginia']
 states.sort()
 state = st.sidebar.selectbox('State of Interest',states)
 st.write(state)
