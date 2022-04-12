@@ -31,6 +31,7 @@ df = pd.read_json(data.content)
 
 df = df[df.reporting_jurisdiction == state]
 counties = list(set(df.county_names.tolist()))
+counties.sort()
 county = st.sidebar.selectbox('County of Interest',counties)
 
 st.write(county)
