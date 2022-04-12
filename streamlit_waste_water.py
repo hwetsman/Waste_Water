@@ -112,7 +112,7 @@ else:
     
     
     #add figure
-    fig = plt.figure(figsize=(12, 5))
+    fig = plt.figure(figsize=(15, 10))
     X = df.date_start.tolist()
     Y = df.start_quantity.tolist()
     plt.plot(X, Y,label=plant)
