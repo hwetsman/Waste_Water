@@ -23,7 +23,7 @@ import streamlit as st
 states = ['Idaho', 'Texas', 'Washington', 'Maine', 'Missouri', 'Illinois', 'New York', 'South Dakota', 'Nebraska', 'Oregon', 'Wisconsin', 'Nevada', 'South Carolina', 'Colorado', 'Minnesota', 'West Virginia', 'Kansas', 'Michigan', 'Georgia', 'Maryland', 'California', 'Vermont', 'Massachusetts', 'Louisiana', 'Rhode Island', 'Ohio', 'Indiana', 'North Carolina', 'Utah', 'Florida', 'Iowa', 'Connecticut', 'Virginia']
 states.sort()
 state = st.sidebar.selectbox('State of Interest',states)
-st.write(state)
+# st.write(state)
 
 url = f'https://data.cdc.gov/resource/2ew6-ywp6.json?wwtp_jurisdiction={state}'
 data = requests.get(url)
@@ -34,7 +34,7 @@ counties = list(set(df.county_names.tolist()))
 counties.sort()
 county = st.sidebar.selectbox('County of Interest',counties)
 
-st.write(county)
+# st.write(county)
 df = df[df.county_names == county]
 plants = list(set(df.wwtp_id.tolist()))
 
@@ -42,7 +42,7 @@ plants = list(set(df.wwtp_id.tolist()))
 plant = st.sidebar.selectbox('Treatment Plant',plants)
 df = df[df.wwtp_id == plant]
 
-st.write(df)
+# st.write(df)
 
 
 
@@ -85,21 +85,21 @@ else:
     for i,r in df.iterrows():
         df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'], format='%Y-%m-%d')
         df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'], format='%Y-%m-%d')
-    st.write(df)
+    # st.write(df)
     
     #get first and last day
     starting_dates = df.date_start.tolist()
     ending_dates = df.date_end.tolist()
     first_day = str(np.array(starting_dates).min()).split(' ')[0]
     last_day = str(np.array(ending_dates).max()).split(' ')[0]
-    st.write(first_day)
-    st.write(last_day)
+    # st.write(first_day)
+    # st.write(last_day)
     
     # calculate quantity for first end date forward as start
     df.reset_index(inplace=True,drop=True)
     idx_first = df[df.date_start == df.date_end.min()].index[0]
-    st.write(idx_first)
-    st.write(df.index.max())
+    # st.write(idx_first)
+    # st.write(df.index.max())
     for i in range(idx_first, df.index.max()+1, 1):
         if i == idx_first:
             df.loc[i, 'start_quantity'] = 1
