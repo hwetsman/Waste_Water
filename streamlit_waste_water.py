@@ -47,82 +47,82 @@ df = df[df.wwtp_id == plant]
 
 
 #alternate data source for Orange County
-if state == 'Florida' and county == 'Orange':
-    url = 'https://raw.githubusercontent.com/biobotanalytics/covid19-wastewater-data/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
-    df = pd.read_csv(url)
-    df.drop('Unnamed: 0',axis=1,inplace=True)
+# if state == 'Florida' and county == 'Orange':
+#     url = 'https://raw.githubusercontent.com/biobotanalytics/covid19-wastewater-data/6cccf0ee1c4248ece605468096fad2af4bb058b5/wastewater_by_county.csv'
+#     df = pd.read_csv(url)
+#     df.drop('Unnamed: 0',axis=1,inplace=True)
     
-    states = ['FL']
-    df = df[df.state.isin(states)]
-    df = df[df.name == 'Orange County, FL']
-    df.sampling_week = pd.to_datetime(df.sampling_week, format='%Y-%m-%d')
-    df = df[['sampling_week','effective_concentration_rolling_average']]
-    fig = plt.figure(figsize=(12, 5))
-    first_day = str(df.sampling_week.min()).split(' ')[0]
-    last_day = str(df.sampling_week.max()).split(' ')[0]
+#     states = ['FL']
+#     df = df[df.state.isin(states)]
+#     df = df[df.name == 'Orange County, FL']
+#     df.sampling_week = pd.to_datetime(df.sampling_week, format='%Y-%m-%d')
+#     df = df[['sampling_week','effective_concentration_rolling_average']]
+#     fig = plt.figure(figsize=(12, 5))
+#     first_day = str(df.sampling_week.min()).split(' ')[0]
+#     last_day = str(df.sampling_week.max()).split(' ')[0]
     
-    fig = plt.figure(figsize=(10,8))
-    X = df.sampling_week.tolist()
-    Y = df.effective_concentration_rolling_average.tolist()
-    plt.plot(X, Y)
-    plt.title(f'Orange County Covid Waste Water Testing Data from {first_day} to {last_day}')
-    plt.xlabel('Date')
-    plt.ylabel('Effective Concentration Rolling Average')
-    plt.legend()
-    plt.yscale('log')
-    plt.xticks(rotation=70)
-    st.pyplot(fig)
+#     fig = plt.figure(figsize=(10,8))
+#     X = df.sampling_week.tolist()
+#     Y = df.effective_concentration_rolling_average.tolist()
+#     plt.plot(X, Y)
+#     plt.title(f'Orange County Covid Waste Water Testing Data from {first_day} to {last_day}')
+#     plt.xlabel('Date')
+#     plt.ylabel('Effective Concentration Rolling Average')
+#     plt.legend()
+#     plt.yscale('log')
+#     plt.xticks(rotation=70)
+#     st.pyplot(fig)
     
-else:
+# else:
 
 
-    df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
-    df = df[~df.ptc_15d.isna()]
-    df.reset_index(drop=True,inplace=True)
-    # st.write(type(df.loc[0,'date_start']))
-    df.sort_values('date_end', inplace=True, axis=0)
-    df.drop_duplicates(inplace=True)
-    for i,r in df.iterrows():
-        df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'], format='%Y-%m-%d')
-        df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'], format='%Y-%m-%d')
-    # st.write(df)
-    
-    #get first and last day
-    starting_dates = df.date_start.tolist()
-    ending_dates = df.date_end.tolist()
-    first_day = str(np.array(starting_dates).min()).split(' ')[0]
-    last_day = str(np.array(ending_dates).max()).split(' ')[0]
-    # st.write(first_day)
-    # st.write(last_day)
-    
-    # calculate quantity for first end date forward as start
-    df.reset_index(inplace=True,drop=True)
-    idx_first = df[df.date_start == df.date_end.min()].index[0]
-    # st.write(idx_first)
-    # st.write(df.index.max())
-    for i in range(idx_first, df.index.max()+1, 1):
-        if i == idx_first:
-            df.loc[i, 'start_quantity'] = 1
-        else:
-            base = df.loc[i-1, 'start_quantity']
-            percent_change = df.loc[i, 'ptc_15d']
-            delta = df.loc[i, 'ptc_15d']/100*base
-            new_total = base+delta
-            df.loc[i, 'start_quantity'] = max(int(new_total),1)
-    
-    
-    #add figure
-    fig = plt.figure(figsize=(15, 10))
-    X = df.date_start.tolist()
-    Y = df.start_quantity.tolist()
-    plt.plot(X, Y,label=plant)
-    plt.yscale('log')
-    plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
-    plt.xlabel('Date')
-    plt.ylabel('Viral Load (not to actual scale)')
-    plt.legend()
-    plt.xticks(rotation=70)
-    st.pyplot(fig)
+df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
+df = df[~df.ptc_15d.isna()]
+df.reset_index(drop=True,inplace=True)
+# st.write(type(df.loc[0,'date_start']))
+df.sort_values('date_end', inplace=True, axis=0)
+df.drop_duplicates(inplace=True)
+for i,r in df.iterrows():
+    df.loc[i,'date_start'] = pd.to_datetime(df.loc[i,'date_start'], format='%Y-%m-%d')
+    df.loc[i,'date_end'] = pd.to_datetime(df.loc[i,'date_end'], format='%Y-%m-%d')
+# st.write(df)
+
+#get first and last day
+starting_dates = df.date_start.tolist()
+ending_dates = df.date_end.tolist()
+first_day = str(np.array(starting_dates).min()).split(' ')[0]
+last_day = str(np.array(ending_dates).max()).split(' ')[0]
+# st.write(first_day)
+# st.write(last_day)
+
+# calculate quantity for first end date forward as start
+df.reset_index(inplace=True,drop=True)
+idx_first = df[df.date_start == df.date_end.min()].index[0]
+# st.write(idx_first)
+# st.write(df.index.max())
+for i in range(idx_first, df.index.max()+1, 1):
+    if i == idx_first:
+        df.loc[i, 'start_quantity'] = 1
+    else:
+        base = df.loc[i-1, 'start_quantity']
+        percent_change = df.loc[i, 'ptc_15d']
+        delta = df.loc[i, 'ptc_15d']/100*base
+        new_total = base+delta
+        df.loc[i, 'start_quantity'] = max(int(new_total),1)
+
+
+#add figure
+fig = plt.figure(figsize=(15, 10))
+X = df.date_start.tolist()
+Y = df.start_quantity.tolist()
+plt.plot(X, Y,label=plant)
+plt.yscale('log')
+plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
+plt.xlabel('Date')
+plt.ylabel('Viral Load (not to actual scale)')
+plt.legend()
+plt.xticks(rotation=70)
+st.pyplot(fig)
 
 
 #     for plant in plant_dict:
