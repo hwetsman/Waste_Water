@@ -49,18 +49,22 @@ df = df[['wwtp_id', 'county_names',  'date_start', 'date_end', 'ptc_15d']]
 df = df[~df.ptc_15d.isna()]
 df.reset_index(drop=True, inplace=True)
 df.sort_values('date_end', inplace=True, axis=0)
-st.write(df)
 df.drop_duplicates(inplace=True)
 st.write(df)
-for i, r in df.iterrows():
-    df.loc[i, 'date_start'] = pd.to_datetime(df.loc[i, 'date_start'], format='%Y-%m-%d')
-    df.loc[i, 'date_end'] = pd.to_datetime(df.loc[i, 'date_end'], format='%Y-%m-%d')
+# for i, r in df.iterrows():
+#     df.loc[i, 'date_start'] = pd.to_datetime(df.loc[i, 'date_start'], format='%Y-%m-%d')
+#     df.loc[i, 'date_end'] = pd.to_datetime(df.loc[i, 'date_end'], format='%Y-%m-%d')
 
 # get first and last day
+df.date_start = pd.to_datetime(df.date_start, yearfirst=True)
 starting_dates = df.date_start.tolist()
+df.date_end = pd.to_datetime(df.date_end, yearfirst=True)
 ending_dates = df.date_end.tolist()
+
 first_day = str(np.array(starting_dates).min()).split(' ')[0]
+st.write(first_day)
 last_day = str(np.array(ending_dates).max()).split(' ')[0]
+st.write(last_day)
 
 # calculate quantity for first end date forward as start
 df.reset_index(inplace=True, drop=True)
