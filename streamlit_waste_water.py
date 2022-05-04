@@ -50,7 +50,7 @@ df = df[~df.ptc_15d.isna()]
 df.reset_index(drop=True, inplace=True)
 df.sort_values('date_end', inplace=True, axis=0)
 df.drop_duplicates(inplace=True)
-st.write(df)
+# st.write(df)
 
 # get first and last day
 df.date_start = pd.to_datetime(df.date_start, yearfirst=True)
@@ -60,7 +60,7 @@ ending_dates = df.date_end.tolist()
 
 first_day = str(np.array(starting_dates).min()).split(' ')[0]
 last_day = str(np.array(ending_dates).max()).split(' ')[0]
-st.write(first_day, last_day)
+# st.write(first_day, last_day)
 # calculate quantity for first end date forward as start
 
 # df.reset_index(inplace=True, drop=True)
@@ -75,7 +75,7 @@ for i in range(idx_first, df.index.max()+1, 1):
         delta = base*df.loc[i, 'ptc_15d']/100
         new_total = base+delta
         df.loc[i, 'start_quantity'] = max(int(new_total), 1)
-print(df)
+# print(df)
 
 # add figure
 fig = plt.figure(figsize=(15, 10))
