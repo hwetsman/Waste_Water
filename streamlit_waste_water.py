@@ -51,9 +51,6 @@ df.reset_index(drop=True, inplace=True)
 df.sort_values('date_end', inplace=True, axis=0)
 df.drop_duplicates(inplace=True)
 st.write(df)
-# for i, r in df.iterrows():
-#     df.loc[i, 'date_start'] = pd.to_datetime(df.loc[i, 'date_start'], format='%Y-%m-%d')
-#     df.loc[i, 'date_end'] = pd.to_datetime(df.loc[i, 'date_end'], format='%Y-%m-%d')
 
 # get first and last day
 df.date_start = pd.to_datetime(df.date_start, yearfirst=True)
@@ -62,27 +59,27 @@ df.date_end = pd.to_datetime(df.date_end, yearfirst=True)
 ending_dates = df.date_end.tolist()
 
 first_day = str(np.array(starting_dates).min()).split(' ')[0]
-st.write(first_day)
 last_day = str(np.array(ending_dates).max()).split(' ')[0]
-st.write(last_day)
-
+st.write(first_day, last_day)
 # calculate quantity for first end date forward as start
-df.reset_index(inplace=True, drop=True)
+
+# df.reset_index(inplace=True, drop=True)
 idx_first = df[df.date_start == df.date_end.min()].index[0]
+st.write(idx_first)
 for i in range(idx_first, df.index.max()+1, 1):
     if i == idx_first:
         df.loc[i, 'start_quantity'] = 1
     else:
         base = df.loc[i-1, 'start_quantity']
         percent_change = df.loc[i, 'ptc_15d']
-        delta = df.loc[i, 'ptc_15d']/100*base
+        delta = base*df.loc[i, 'ptc_15d']/100
         new_total = base+delta
         df.loc[i, 'start_quantity'] = max(int(new_total), 1)
-
+print(df)
 
 # add figure
 fig = plt.figure(figsize=(15, 10))
-X = df.date_start.tolist()
+X = df.date_end.tolist()
 Y = df.start_quantity.tolist()
 plt.plot(X, Y, label=plant)
 plt.yscale('log')
