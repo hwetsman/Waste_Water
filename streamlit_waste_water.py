@@ -93,6 +93,7 @@ plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_da
 plt.xlabel('Date')
 plt.ylabel('% change from 15 days previous')
 plt.legend()
+plt.hlines(0, X[0], X[-1], colors='black')
 plt.xticks(rotation=70)
 st.pyplot(fig)
 
