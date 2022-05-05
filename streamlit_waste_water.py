@@ -50,7 +50,7 @@ df = df[~df.ptc_15d.isna()]
 df.reset_index(drop=True, inplace=True)
 df.sort_values('date_end', inplace=True, axis=0)
 df.drop_duplicates(inplace=True)
-st.write(df)
+# st.write(df)
 
 # get first and last day
 # df.date_start = pd.to_datetime(df.date_start, yearfirst=True)
@@ -68,7 +68,7 @@ last_day = df.loc[df.shape[0]-1, 'date_end']
 # df.reset_index(inplace=True, drop=True)
 idx_first = df[df.date_start == df.date_end.min()].index[0]
 start_quant = 1000000
-st.write(idx_first, start_quant)
+# st.write(idx_first, start_quant)
 
 Y = df['ptc_15d'].tolist()
 
