@@ -94,7 +94,7 @@ for i in plotter.index:
 
 # plot plotter quantitites
 fig1, ax1 = plt.subplots()
-fig1 = plt.figure(figsize=(20, 8))
+fig1 = plt.figure(figsize=(20, 12))
 Y1 = plotter.quant.tolist()
 X1 = pd.to_datetime(plotter.end.tolist())
 plt.plot(X1, Y1, label=plant)
@@ -113,7 +113,7 @@ Y = df['ptc_15d'].tolist()
 
 # add figure
 fig, ax = plt.subplots()
-fig = plt.figure(figsize=(20, 8))
+fig = plt.figure(figsize=(20, 12))
 X = pd.to_datetime(df.date_end.tolist())
 plt.plot(X, Y, label=plant)
 
