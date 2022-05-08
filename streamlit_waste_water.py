@@ -70,9 +70,41 @@ idx_first = df[df.date_start == df.date_end.min()].index[0]
 start_quant = 1000000
 # st.write(idx_first, start_quant)
 
+plotter = pd.DataFrame()
+day = df.date_end.tolist()[-1]
+while day in df.date_end.tolist():
+    idx = df[df.date_end == day].index[0]
+    next = next_date = df.loc[idx, 'date_start']
+    pct = df.loc[idx, 'ptc_15d']
+    plotter.loc[idx, 'ptc'] = pct
+    plotter.loc[idx, 'start'] = next
+    plotter.loc[idx, 'end'] = day
+    day = next
+plotter.sort_values('start', inplace=True)
+plotter.reset_index(drop=True, inplace=True)
+plotter.loc[plotter.index.max()+1, 'end'] = plotter.loc[0, 'start']
+plotter.sort_values('end', inplace=True)
+plotter.reset_index(drop=True, inplace=True)
+for i in plotter.index:
+    if i == 0:
+        plotter.loc[i, 'quant'] = 1000
+    else:
+        plotter.loc[i, 'quant'] = (1+(plotter.loc[i, 'ptc']/100))
+
+st.write(plotter)
+
+
+# #get its index
+# idx = df[df.date_end == last_date].index[0]
+# #get its starting date
+# next_date = df.loc[idx, 'date_start']
+
+# #use starting date as next end date
+# next_idx = df[df.date_end == next_date].index[0]
+# st.write(last_date, idx, next_date, next_idx)
+
+
 Y = df['ptc_15d'].tolist()
-
-
 # add figure
 fig, ax = plt.subplots()
 fig = plt.figure(figsize=(15, 10))
