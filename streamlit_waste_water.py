@@ -92,29 +92,24 @@ for i in plotter.index:
         plotter.loc[i, 'quant'] = max(
             1, int(plotter.loc[i-1, 'quant']*(1+(plotter.loc[i, 'ptc']/100))))
 
-st.write(plotter)
-
-
-# #get its index
-# idx = df[df.date_end == last_date].index[0]
-# #get its starting date
-# next_date = df.loc[idx, 'date_start']
-
-# #use starting date as next end date
-# next_idx = df[df.date_end == next_date].index[0]
-# st.write(last_date, idx, next_date, next_idx)
-
-
-Y = df['ptc_15d'].tolist()
+# plot plotter quantitites
+fig1, ax1 = plt.subplots()
+fig1 = plt.figure(figsize=(15, 5))
 Y1 = plotter.quant.tolist()
+X1 = pd.to_datetime(plotter.end.tolist())
+plt.plot(X1, Y1, label=plant)
+st.pyplot(fig1)
+
+
+# plot df changes
+Y = df['ptc_15d'].tolist()
+
 # add figure
 fig, ax = plt.subplots()
-fig = plt.figure(figsize=(15, 10))
+fig = plt.figure(figsize=(15, 5))
 X = pd.to_datetime(df.date_end.tolist())
-X1 = pd.to_datetime(plotter.end.tolist())
-# Y = df.start_quantity.tolist()
-# plt.plot(X, Y, label=plant)
-plt.plot(X1, Y1, label=plant)
+plt.plot(X, Y, label=plant)
+
 # plt.yscale('log')
 plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
 plt.xlabel('Date')
@@ -122,9 +117,9 @@ plt.ylabel('% change from 15 days previous')
 plt.legend()
 plt.hlines(0, X[0], X[-1], colors='black')
 plt.xticks(rotation=70)
-# for index, label in enumerate(ax.xaxis.get_ticklabels()):
-#     if index % 5 != 0:
-#         label.set_visible(False)
+for index, label in enumerate(ax.xaxis.get_ticklabels()):
+    if index % 5 != 0:
+        label.set_visible(False)
 st.pyplot(fig)
 
 
