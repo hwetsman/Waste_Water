@@ -94,10 +94,17 @@ for i in plotter.index:
 
 # plot plotter quantitites
 fig1, ax1 = plt.subplots()
-fig1 = plt.figure(figsize=(15, 5))
+fig1 = plt.figure(figsize=(20, 8))
 Y1 = plotter.quant.tolist()
 X1 = pd.to_datetime(plotter.end.tolist())
 plt.plot(X1, Y1, label=plant)
+plt.yscale('log')
+plt.title(
+    f'{county} Covid Waste Water Testing Data from {plotter.start.tolist()[1]} to {plotter.end.tolist()[-1]}')
+plt.xlabel('Date')
+plt.ylabel('Example copy number change over time (not actual quantities)')
+plt.legend()
+plt.xticks(rotation=70)
 st.pyplot(fig1)
 
 
@@ -106,11 +113,11 @@ Y = df['ptc_15d'].tolist()
 
 # add figure
 fig, ax = plt.subplots()
-fig = plt.figure(figsize=(15, 5))
+fig = plt.figure(figsize=(20, 8))
 X = pd.to_datetime(df.date_end.tolist())
 plt.plot(X, Y, label=plant)
 
-# plt.yscale('log')
+#
 plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
 plt.xlabel('Date')
 plt.ylabel('% change from 15 days previous')
