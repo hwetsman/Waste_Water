@@ -72,22 +72,11 @@ start_quant = 1000000
 
 Y = df['ptc_15d'].tolist()
 
-# for i in range(idx_first, df.index.max()+1, 1):
-#     if i == idx_first:
-#         df.loc[i, 'start_quantity'] = 1
-#     else:
-#         base = df.loc[i-1, 'start_quantity']
-#         percent_change = df.loc[i, 'ptc_15d']
-#         delta = base*df.loc[i, 'ptc_15d']/100
-#         new_total = base+delta
-#         df.loc[i, 'start_quantity'] = max(int(new_total), 1)
-# print(df)
 
 # add figure
 fig, ax = plt.subplots()
 fig = plt.figure(figsize=(15, 10))
 X = pd.to_datetime(df.date_end.tolist())
-print(X)
 # Y = df.start_quantity.tolist()
 plt.plot(X, Y, label=plant)
 # plt.yscale('log')
