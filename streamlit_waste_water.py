@@ -84,8 +84,10 @@ Y = df['ptc_15d'].tolist()
 # print(df)
 
 # add figure
+fig, ax = plt.subplots()
 fig = plt.figure(figsize=(15, 10))
-X = df.date_end.tolist()
+X = pd.to_datetime(df.date_end.tolist())
+print(X)
 # Y = df.start_quantity.tolist()
 plt.plot(X, Y, label=plant)
 # plt.yscale('log')
@@ -95,6 +97,9 @@ plt.ylabel('% change from 15 days previous')
 plt.legend()
 plt.hlines(0, X[0], X[-1], colors='black')
 plt.xticks(rotation=70)
+for index, label in enumerate(ax.xaxis.get_ticklabels()):
+    if index % 5 != 0:
+        label.set_visible(False)
 st.pyplot(fig)
 
 
