@@ -89,7 +89,8 @@ for i in plotter.index:
     if i == 0:
         plotter.loc[i, 'quant'] = 1000
     else:
-        plotter.loc[i, 'quant'] = (1+(plotter.loc[i, 'ptc']/100))
+        plotter.loc[i, 'quant'] = max(
+            1, int(plotter.loc[i-1, 'quant']*(1+(plotter.loc[i, 'ptc']/100))))
 
 st.write(plotter)
 
@@ -105,12 +106,15 @@ st.write(plotter)
 
 
 Y = df['ptc_15d'].tolist()
+Y1 = plotter.quant.tolist()
 # add figure
 fig, ax = plt.subplots()
 fig = plt.figure(figsize=(15, 10))
 X = pd.to_datetime(df.date_end.tolist())
+X1 = pd.to_datetime(plotter.end.tolist())
 # Y = df.start_quantity.tolist()
-plt.plot(X, Y, label=plant)
+# plt.plot(X, Y, label=plant)
+plt.plot(X1, Y1, label=plant)
 # plt.yscale('log')
 plt.title(f'{county} Covid Waste Water Testing Data from {first_day} to {last_day}')
 plt.xlabel('Date')
@@ -118,9 +122,9 @@ plt.ylabel('% change from 15 days previous')
 plt.legend()
 plt.hlines(0, X[0], X[-1], colors='black')
 plt.xticks(rotation=70)
-for index, label in enumerate(ax.xaxis.get_ticklabels()):
-    if index % 5 != 0:
-        label.set_visible(False)
+# for index, label in enumerate(ax.xaxis.get_ticklabels()):
+#     if index % 5 != 0:
+#         label.set_visible(False)
 st.pyplot(fig)
 
 
